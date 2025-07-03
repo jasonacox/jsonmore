@@ -16,7 +16,7 @@ Date: July 2, 2025
 Repository: https://github.com/jasonacox/jsonmore
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Jason Cox"
 __description__ = (
     "A powerful JSON file reader with formatting, repair, and analysis capabilities"

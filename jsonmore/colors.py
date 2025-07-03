@@ -1,47 +1,55 @@
 """
 jsonmore - Color definitions for terminal output
 
-ANSI color codes and formatting definitions for colorized terminal output.
-Provides consistent color scheme across the jsonmore package.
+Cross-platform color codes and formatting definitions for colorized terminal output.
+Uses colorama for Windows compatibility and consistent color display.
 
 Features:
-- Standard ANSI color codes (black, red, green, yellow, blue, magenta, cyan, white)
+- Cross-platform color support via colorama
+- Standard color codes (black, red, green, yellow, blue, magenta, cyan, white)
 - Bright/bold color variants
 - Reset and formatting codes (bold, dim)
 
 Requirements:
 - Python 3.8+
-- ANSI-compatible terminal for color display
+- colorama for cross-platform color support
 
 Author: Jason Cox
 Date: July 2, 2025
 Repository: https://github.com/jasonacox/jsonmore
 """
 
+from colorama import Fore, Style, init
+
+# Initialize colorama for cross-platform support
+# autoreset=True means colors reset after each print
+init(autoreset=True)
+
 
 class Colors:
-    """ANSI color codes for terminal output"""
+    """Cross-platform color codes for terminal output using colorama"""
 
-    RESET = "\033[0m"
-    BOLD = "\033[1m"
-    DIM = "\033[2m"
+    # Reset and formatting
+    RESET = Style.RESET_ALL
+    BOLD = Style.BRIGHT
+    DIM = Style.DIM
 
-    # Regular colors
-    BLACK = "\033[30m"
-    RED = "\033[31m"
-    GREEN = "\033[32m"
-    YELLOW = "\033[33m"
-    BLUE = "\033[34m"
-    MAGENTA = "\033[35m"
-    CYAN = "\033[36m"
-    WHITE = "\033[37m"
+    # Regular colors using colorama
+    BLACK = Fore.BLACK
+    RED = Fore.RED
+    GREEN = Fore.GREEN
+    YELLOW = Fore.YELLOW
+    BLUE = Fore.BLUE
+    MAGENTA = Fore.MAGENTA
+    CYAN = Fore.CYAN
+    WHITE = Fore.WHITE
 
-    # Bright colors
-    BRIGHT_BLACK = "\033[90m"
-    BRIGHT_RED = "\033[91m"
-    BRIGHT_GREEN = "\033[92m"
-    BRIGHT_YELLOW = "\033[93m"
-    BRIGHT_BLUE = "\033[94m"
-    BRIGHT_MAGENTA = "\033[95m"
-    BRIGHT_CYAN = "\033[96m"
-    BRIGHT_WHITE = "\033[97m"
+    # Bright colors using colorama's bright variants
+    BRIGHT_BLACK = Fore.LIGHTBLACK_EX
+    BRIGHT_RED = Fore.LIGHTRED_EX
+    BRIGHT_GREEN = Fore.LIGHTGREEN_EX
+    BRIGHT_YELLOW = Fore.LIGHTYELLOW_EX
+    BRIGHT_BLUE = Fore.LIGHTBLUE_EX
+    BRIGHT_MAGENTA = Fore.LIGHTMAGENTA_EX
+    BRIGHT_CYAN = Fore.LIGHTCYAN_EX
+    BRIGHT_WHITE = Fore.LIGHTWHITE_EX
