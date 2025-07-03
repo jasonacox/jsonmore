@@ -8,7 +8,7 @@ This package provides tools for reading, formatting, and analyzing JSON files wi
 - Structure analysis
 
 Requirements:
-- Python 3.6+ (uses f-strings and type hints)
+- Python 3.8+ (uses f-strings and type hints)
 - Standard library only (json, re, pathlib, subprocess, etc.)
 
 Author: Jason Cox

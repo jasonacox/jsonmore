@@ -10,7 +10,7 @@ Features:
 - Reset and formatting codes (bold, dim)
 
 Requirements:
-- Python 3.6+
+- Python 3.8+
 - ANSI-compatible terminal for color display
 
 Author: Jason Cox

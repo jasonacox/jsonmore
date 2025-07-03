@@ -3,7 +3,7 @@
 A powerful command-line tool for reading, formatting, and analyzing JSON files with beautiful syntax highlighting, automatic error repair, and smart paging.
 
 [![PyPI version](https://badge.fury.io/py/jsonmore.svg)](https://badge.fury.io/py/jsonmore)
-[![Python 3.6+](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## ✨ Features
@@ -357,7 +357,7 @@ jsonmore input.json --no-repair || echo "File is invalid"
 - **Smart paging**: Only activates for outputs longer than terminal height
 
 ### Dependencies
-- **Python 3.6+** (uses f-strings and type hints)
+- **Python 3.8+** (uses f-strings and type hints)
 - **Standard library only** (no external dependencies)
 - **Optional**: `less`/`more` for enhanced paging
 
@@ -378,7 +378,7 @@ We welcome contributions! Here's how to get started:
 
 ### Guidelines
 
-- Maintain compatibility with Python 3.6+
+- Maintain compatibility with Python 3.8+
 - Follow the existing code style (use `black` for formatting)
 - Add tests for new features
 - Update documentation as needed

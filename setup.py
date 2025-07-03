@@ -11,7 +11,7 @@ Features:
 - Cross-platform compatibility
 
 Requirements:
-- Python 3.6+
+- Python 3.8+
 - setuptools for package building
 - Standard library modules
 
@@ -59,8 +59,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -71,7 +69,7 @@ setup(
         "Topic :: Utilities",
     ],
     keywords=["json", "cli", "formatting", "syntax-highlighting", "repair", "validator"],
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     install_requires=[],
     entry_points={
         'console_scripts': [

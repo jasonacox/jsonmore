@@ -7,7 +7,7 @@ Utility functions including:
 - Cross-platform compatibility helpers
 
 Requirements:
-- Python 3.6+ (uses f-strings and subprocess)
+- Python 3.8+ (uses f-strings and subprocess)
 - Standard library only (os, shutil, subprocess)
 
 Author: Jason Cox

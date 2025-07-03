@@ -7,7 +7,7 @@ This repository includes comprehensive GitHub Actions workflows for continuous i
 ### 🔄 CI (`.github/workflows/ci.yml`)
 **Comprehensive testing and quality checks**
 - **Triggers**: Push to `main`/`develop`, Pull Requests to `main`
-- **Test Matrix**: Python 3.6-3.12 on Ubuntu, Windows, macOS
+- **Test Matrix**: Python 3.8-3.12 on Ubuntu, Windows, macOS
 - **Features**:
   - Run legacy tests (`python test_jsonmore.py`)
   - Run comprehensive unittest suite (`python test_jsonmore.py --comprehensive`) 

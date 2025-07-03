@@ -17,7 +17,7 @@ Test Coverage:
 - CLI: argument parsing and main function behavior
 
 Requirements:
-- Python 3.6+
+- Python 3.8+
 - jsonmore package modules
 - tempfile for test file creation
 - unittest for structured testing

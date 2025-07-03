@@ -14,7 +14,7 @@ Features:
 - File size validation and encoding detection
 
 Requirements:
-- Python 3.6+ (uses f-strings, type hints, pathlib)
+- Python 3.8+ (uses f-strings, type hints, pathlib)
 - Standard library (json, re, pathlib)
 - jsonmore.colors module for terminal formatting
 

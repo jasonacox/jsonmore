@@ -10,7 +10,7 @@ Features:
 - Integration with core JSON processing modules
 
 Requirements:
-- Python 3.6+ (uses f-strings)
+- Python 3.8+ (uses f-strings)
 - Standard library (argparse, sys)
 - jsonmore.core, jsonmore.colors, jsonmore.utils modules
 
