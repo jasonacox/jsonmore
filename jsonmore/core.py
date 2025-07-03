@@ -192,6 +192,59 @@ class JSONReader:
                     "error": original_error,
                 }
 
+    def read_stdin(
+        self, json_text: str, repair_attempts: bool = True
+    ) -> Dict[str, Any]:
+        """Read and parse JSON from stdin with repair capabilities"""
+        print("Reading from stdin...")
+        print(f"Input size: {len(json_text)} characters")
+        print("-" * 50)
+
+        # First attempt: try parsing as-is
+        try:
+            data = json.loads(json_text)
+            return {"status": "valid", "data": data}
+        except json.JSONDecodeError as original_error:
+            if not repair_attempts:
+                raise ValueError(f"Invalid JSON format: {original_error}")
+
+            print(
+                f"{Colors.YELLOW}⚠ JSON parsing failed, attempting repairs...{Colors.RESET}"
+            )
+
+            # Second attempt: try automatic repair
+            try:
+                repaired_text = JSONRepair.attempt_repair(json_text)
+                data = json.loads(repaired_text)
+                print(f"{Colors.GREEN}✓ Successfully repaired JSON!{Colors.RESET}")
+                return {"status": "repaired", "data": data, "repairs_applied": True}
+            except json.JSONDecodeError:
+                print(f"{Colors.RED}✗ Automatic repair failed{Colors.RESET}")
+
+                # Third attempt: extract partial JSON fragments
+                fragments = JSONRepair.extract_partial_json(json_text)
+                if fragments:
+                    print(
+                        f"{Colors.YELLOW}Found {len(fragments)} valid JSON fragment(s){Colors.RESET}"
+                    )
+                    return {
+                        "status": "partial",
+                        "fragments": fragments,
+                        "original_error": original_error,
+                        "raw_text": json_text,
+                    }
+
+                # Final fallback: return raw content with error highlighting
+                highlighted_text = JSONRepair.highlight_errors(
+                    json_text, original_error, use_colors=True
+                )
+                return {
+                    "status": "corrupt",
+                    "raw_text": json_text,
+                    "highlighted_text": highlighted_text,
+                    "error": original_error,
+                }
+
     def preview_structure(
         self, data: Any, max_depth: int = 3, current_depth: int = 0
     ) -> str:

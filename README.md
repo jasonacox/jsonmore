@@ -6,33 +6,7 @@ A powerful command-line tool for reading, formatting, and analyzing JSON files w
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## ✨ Features
-
-### 🎨 **Beautiful Output**
-- **Color-coded syntax highlighting** for JSON elements
-- **Pretty-printed formatting** with customizable indentation
-- **Structure overview** showing file statistics and preview
-- **Smart paging** for long outputs (like `less` command)
-
-### 🔧 **Automatic JSON Repair**
-- **Auto-detection and repair** of common JSON syntax errors
-- **Partial JSON extraction** from malformed files
-- **Error highlighting** with precise location indicators
-- **Graceful fallback** handling for severely corrupted files
-
-### 📊 **Multiple Display Modes**
-- **Full display**: Complete formatted JSON with colors
-- **Compact mode**: Structure overview only
-- **Fragment mode**: Display valid JSON pieces from corrupt files
-- **Raw mode**: Original content with error highlighting
-
-### 🛡️ **Robust File Handling**
-- **File size protection** with configurable limits
-- **Encoding detection** and error handling
-- **Large file support** with automatic paging
-- **Memory-efficient** processing
-
-## 📦 Installation
+## Installation
 
 ### For Users (Recommended)
 
@@ -59,7 +33,7 @@ cd jsonmore
 pip install -e ".[dev]"
 ```
 
-## 🚀 Quick Start
+## Quick Start 🚀
 
 After installation, use the `jsonmore` command directly:
 
@@ -77,7 +51,7 @@ jsonmore data/example.json --compact
 jsonmore data/example.json --no-colors
 ```
 
-## 📚 Usage
+## Usage
 
 ### Command Line Interface
 
@@ -139,7 +113,7 @@ print(formatted)
 
 The tool can automatically detect and fix common JSON syntax errors:
 
-### ✅ **Supported Repairs**
+### **Supported Repairs**
 - **Missing quotes** around object keys
 - **Single quotes** instead of double quotes
 - **Trailing commas** in objects and arrays
@@ -148,7 +122,7 @@ The tool can automatically detect and fix common JSON syntax errors:
 - **Missing braces** in nested objects
 - **Malformed structure** patterns
 
-### 📋 **Example Repairs**
+### **Example Repairs**
 
 **Before (broken JSON):**
 ```json
@@ -170,7 +144,7 @@ The tool can automatically detect and fix common JSON syntax errors:
 }
 ```
 
-## 🏗️ Package Structure
+## Package Structure
 
 For developers and contributors, here's the package organization:
 
@@ -192,7 +166,7 @@ jsonmore/
 - **`jsonmore.utils`**: Utility functions for paging and terminal interaction
 - **`jsonmore`**: Public API exports for library usage
 
-## 🔬 Development
+## Development API
 
 ### Setting Up Development Environment
 
@@ -244,14 +218,14 @@ python -m twine upload --repository testpypi dist/*
 python -m twine upload dist/*
 ```
 
-## 📊 Error Handling
+## Error Handling
 
 The tool provides multiple levels of error handling:
 
-1. **🟢 Valid JSON**: Normal parsing and display
-2. **🔧 Auto-Repair**: Attempts to fix common errors
-3. **📄 Partial Parsing**: Extracts valid JSON fragments
-4. **🚨 Raw Display**: Shows content with error highlighting
+1. **Valid JSON**: Normal parsing and display
+2. **Auto-Repair**: Attempts to fix common errors
+3. **Partial Parsing**: Extracts valid JSON fragments
+4. **Raw Display**: Shows content with error highlighting
 
 ### Example: Partial JSON Recovery
 
@@ -269,7 +243,7 @@ More text here...
 End of file.
 ```
 
-## 🎨 Output Examples
+## Output Examples
 
 ### Structure Overview
 ```
@@ -300,7 +274,7 @@ Structure preview:
 }
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### Paging Behavior
 
@@ -321,7 +295,7 @@ Default maximum file size: **50MB**
 jsonmore huge_file.json --max-size 100
 ```
 
-## 📝 Examples
+## Examples
 
 ### Different Use Cases
 
@@ -352,7 +326,7 @@ jsonmore data.json --compact
 jsonmore input.json --no-repair || echo "File is invalid"
 ```
 
-## 🔍 Technical Details
+## Technical Details
 
 ### Performance
 - **Fast parsing**: Uses Python's built-in `json` module
@@ -369,7 +343,7 @@ jsonmore input.json --no-repair || echo "File is invalid"
 - **1**: File not found, parsing error, or size limit exceeded
 - **130**: User interrupted (Ctrl+C)
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Here's how to get started:
 
@@ -386,11 +360,11 @@ We welcome contributions! Here's how to get started:
 - Add tests for new features
 - Update documentation as needed
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with Python's standard library for maximum compatibility
 - Inspired by tools like `jq`, `bat`, and `less`
@@ -398,4 +372,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**Happy JSON reading! 🎉**
+**Happy JSON reading!**

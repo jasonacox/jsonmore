@@ -23,23 +23,26 @@ Repository: https://github.com/jasonacox/jsonmore
 from setuptools import setup, find_packages
 import os
 
+
 # Read README file
 def read_readme():
-    readme_path = os.path.join(os.path.dirname(__file__), 'README.md')
+    readme_path = os.path.join(os.path.dirname(__file__), "README.md")
     if os.path.exists(readme_path):
-        with open(readme_path, 'r', encoding='utf-8') as f:
+        with open(readme_path, "r", encoding="utf-8") as f:
             return f.read()
     return ""
 
+
 # Read version from package
 def get_version():
-    version_file = os.path.join('jsonmore', '__init__.py')
+    version_file = os.path.join("jsonmore", "__init__.py")
     if os.path.exists(version_file):
-        with open(version_file, 'r') as f:
+        with open(version_file, "r") as f:
             for line in f:
-                if line.startswith('__version__'):
-                    return line.split('=')[1].strip().strip('"\'')
+                if line.startswith("__version__"):
+                    return line.split("=")[1].strip().strip("\"'")
     return "1.0.0"
+
 
 setup(
     name="jsonmore",
@@ -55,7 +58,7 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Intended Audience :: Developers",
-        "Intended Audience :: System Administrators", 
+        "Intended Audience :: System Administrators",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
@@ -68,26 +71,33 @@ setup(
         "Topic :: Text Processing",
         "Topic :: Utilities",
     ],
-    keywords=["json", "cli", "formatting", "syntax-highlighting", "repair", "validator"],
+    keywords=[
+        "json",
+        "cli",
+        "formatting",
+        "syntax-highlighting",
+        "repair",
+        "validator",
+    ],
     python_requires=">=3.8",
     install_requires=[],
     entry_points={
-        'console_scripts': [
-            'jsonmore=jsonmore.cli:main',
+        "console_scripts": [
+            "jsonmore=jsonmore.cli:main",
         ],
     },
     extras_require={
-        'dev': [
-            'pytest>=6.0',
-            'black',
-            'flake8',
-            'mypy',
+        "dev": [
+            "pytest>=6.0",
+            "black",
+            "flake8",
+            "mypy",
         ],
     },
     project_urls={
-        'Homepage': 'https://github.com/jasonacox/jsonmore',
-        'Documentation': 'https://github.com/jasonacox/jsonmore#readme',
-        'Repository': 'https://github.com/jasonacox/jsonmore.git',
-        'Bug Tracker': 'https://github.com/jasonacox/jsonmore/issues',
+        "Homepage": "https://github.com/jasonacox/jsonmore",
+        "Documentation": "https://github.com/jasonacox/jsonmore#readme",
+        "Repository": "https://github.com/jasonacox/jsonmore.git",
+        "Bug Tracker": "https://github.com/jasonacox/jsonmore/issues",
     },
 )
