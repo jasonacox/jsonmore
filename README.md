@@ -38,14 +38,16 @@ pip install -e ".[dev]"
 After installation, use the `jsonmore` command directly:
 
 ```bash
-# Basic usage
+# Basic usage - JSON-only output
 jsonmore data/example.json
+
+# Show additional headers and structure info
+jsonmore data/example.json --verbose
 
 # Alternative: run as Python module
 python -m jsonmore data/example.json
 
-# Show structure overview only
-jsonmore data/example.json --compact
+
 
 # Disable colors for plain text output
 jsonmore data/example.json --no-colors
@@ -65,8 +67,7 @@ jsonmore large_file.json --max-size 100
 # Disable paging for direct output
 jsonmore file.json --no-pager
 
-# Compact structure overview
-jsonmore file.json --compact
+
 
 # Handle malformed JSON
 jsonmore broken.json              # Auto-repair (default)
@@ -81,11 +82,11 @@ jsonmore file.json --indent 4 --no-colors
 | Option | Description |
 |--------|-------------|
 | `--no-colors` | Disable color output for plain text |
-| `--compact` | Show only structure overview |
 | `--max-size N` | Maximum file size in MB (default: 50) |
 | `--indent N` | Indentation spaces (default: 2) |
 | `--no-pager` | Disable automatic paging |
 | `--no-repair` | Disable automatic JSON repair |
+| `--verbose` | Show headers and JSON structure info |
 | `--help` | Show help message and examples |
 
 ### Python API
@@ -301,7 +302,7 @@ jsonmore huge_file.json --max-size 100
 
 ```bash
 # Configuration files
-jsonmore config/settings.json --compact
+
 
 # API responses
 jsonmore api_response.json
@@ -320,7 +321,7 @@ jsonmore broken_config.json
 jsonmore data.json --no-colors --no-pager | grep "name"
 
 # Quick structure check
-jsonmore data.json --compact
+
 
 # Validation in scripts
 jsonmore input.json --no-repair || echo "File is invalid"
@@ -335,7 +336,7 @@ jsonmore input.json --no-repair || echo "File is invalid"
 
 ### Dependencies
 - **Python 3.8+** (uses f-strings and type hints)
-- **Standard library only** (no external dependencies)
+- **Colorama** (cross-platform terminal colors, especially for Windows)
 - **Optional**: `less`/`more` for enhanced paging
 
 ### Exit Codes

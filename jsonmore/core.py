@@ -118,8 +118,23 @@ class JSONReader:
     def __init__(self) -> None:
         self.formatter = JSONFormatter()
 
+    def format_file_size(self, size_in_bytes: int) -> str:
+        """Format file size in human-readable format (bytes, KB, MB, or GB)"""
+        if size_in_bytes < 1024:
+            return f"{size_in_bytes} bytes"
+        elif size_in_bytes < 1024 * 1024:
+            return f"{size_in_bytes / 1024:.2f} KB"
+        elif size_in_bytes < 1024 * 1024 * 1024:
+            return f"{size_in_bytes / (1024 * 1024):.2f} MB"
+        else:
+            return f"{size_in_bytes / (1024 * 1024 * 1024):.2f} GB"
+
     def read_file(
-        self, file_path: str, max_size_mb: float = 50, repair_attempts: bool = True
+        self,
+        file_path: str,
+        max_size_mb: float = 50,
+        repair_attempts: bool = True,
+        verbose: bool = False,
     ) -> Dict[str, Any]:
         """Read and parse JSON file with size validation and repair capabilities"""
         path = Path(file_path)
@@ -131,15 +146,18 @@ class JSONReader:
             raise ValueError(f"Path is not a file: {file_path}")
 
         # Check file size
-        file_size_mb = path.stat().st_size / (1024 * 1024)
+        file_size_bytes = path.stat().st_size
+        file_size_mb = file_size_bytes / (1024 * 1024)
         if file_size_mb > max_size_mb:
             raise ValueError(
-                f"File too large: {file_size_mb:.1f}MB (max: {max_size_mb}MB)"
+                f"File too large: {self.format_file_size(file_size_bytes)} (max: {max_size_mb}MB)"
             )
 
-        print(f"Reading file: {path}")
-        print(f"File size: {file_size_mb:.2f}MB")
-        print("-" * 50)
+        # Only show file info in verbose mode
+        if verbose:
+            print(f"Reading file: {path}")
+            print(f"File size: {self.format_file_size(file_size_bytes)}")
+            print("-" * 50)
 
         try:
             with open(path, "r", encoding="utf-8") as f:
@@ -193,12 +211,16 @@ class JSONReader:
                 }
 
     def read_stdin(
-        self, json_text: str, repair_attempts: bool = True
+        self, json_text: str, repair_attempts: bool = True, verbose: bool = False
     ) -> Dict[str, Any]:
         """Read and parse JSON from stdin with repair capabilities"""
-        print("Reading from stdin...")
-        print(f"Input size: {len(json_text)} characters")
-        print("-" * 50)
+        if verbose:
+            print("Reading from stdin...")
+            input_size_bytes = len(json_text.encode("utf-8"))
+            print(
+                f"Input size: {self.format_file_size(input_size_bytes)} ({len(json_text)} characters)"
+            )
+            print("-" * 50)
 
         # First attempt: try parsing as-is
         try:
@@ -298,21 +320,16 @@ class JSONReader:
         print(self.preview_structure(data))
         print("-" * 50)
 
-    def display_json(
-        self, data: Any, use_colors: bool = True, compact: bool = False
-    ) -> str:
+    def display_json(self, data: Any, use_colors: bool = True) -> str:
         """Format JSON with colors and return as string"""
         self.formatter.use_colors = use_colors
-
-        if compact:
-            # For compact view, return empty string (structure info handled separately)
-            return ""
-        else:
-            # Full formatted output
-            return self.formatter.format_json(data)
+        return self.formatter.format_json(data)
 
     def handle_json_result(
-        self, result: Dict[str, Any], use_colors: bool = True, compact: bool = False
+        self,
+        result: Dict[str, Any],
+        use_colors: bool = True,
+        verbose: bool = False,
     ) -> str:
         """Handle different JSON parsing results (valid, repaired, partial, corrupt)"""
         status = result.get("status", "unknown")
@@ -320,21 +337,26 @@ class JSONReader:
         if status == "valid":
             # Normal JSON processing
             data = result["data"]
-            self.display_info(data)
-            if not compact:
-                return self.display_json(data, use_colors, compact)
-            return ""
+
+            # Show info only in verbose mode
+            if verbose:
+                self.display_info(data)
+
+            return self.display_json(data, use_colors)
 
         elif status == "repaired":
             # Successfully repaired JSON
             data = result["data"]
+
+            # Always show repair message, but info only in verbose mode
             print(
                 f"\n{Colors.GREEN}✓ JSON was automatically repaired and parsed successfully!{Colors.RESET}"
             )
-            self.display_info(data)
-            if not compact:
-                return self.display_json(data, use_colors, compact)
-            return ""
+
+            if verbose:
+                self.display_info(data)
+
+            return self.display_json(data, use_colors)
 
         elif status == "partial":
             # Partial JSON fragments found
@@ -353,10 +375,12 @@ class JSONReader:
                 print(
                     f"\n{Colors.CYAN}Fragment {i+1} ({frag_type}, chars {start}-{end}):{Colors.RESET}"
                 )
-                self.display_info(data)
-                if not compact:
-                    fragment_json = self.display_json(data, use_colors, compact)
-                    output_parts.append(f"--- Fragment {i+1} ---\n{fragment_json}")
+
+                if verbose:
+                    self.display_info(data)
+
+                fragment_json = self.display_json(data, use_colors)
+                output_parts.append(f"--- Fragment {i+1} ---\n{fragment_json}")
 
             return "\n\n".join(output_parts) if output_parts else ""
 

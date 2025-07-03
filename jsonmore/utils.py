@@ -8,7 +8,8 @@ Utility functions including:
 
 Requirements:
 - Python 3.8+ (uses f-strings and subprocess)
-- Standard library only (os, shutil, subprocess)
+- colorama for cross-platform color support
+- Standard library (os, shutil, subprocess)
 
 Author: Jason Cox
 Date: July 2, 2025
@@ -18,7 +19,13 @@ Repository: https://github.com/jasonacox/jsonmore
 import os
 import shutil
 import subprocess
+import sys
 from typing import Optional
+
+# Ensure colorama is initialized for Windows terminals
+from colorama import init
+
+init(strip=(not sys.stdout.isatty()))
 
 
 def get_pager() -> Optional[str]:

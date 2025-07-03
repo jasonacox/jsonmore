@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jsonmore"
-version = "1.0.0"
+version = "1.0.1"
 description = "A powerful command-line tool for reading, formatting, and analyzing JSON files with beautiful syntax highlighting, automatic error repair, and smart paging"
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -33,7 +33,7 @@ classifiers = [
 ]
 keywords = ["json", "cli", "formatting", "syntax-highlighting", "repair", "validator"]
 requires-python = ">=3.8"
-dependencies = []
+dependencies = ["colorama>=0.4.0"]
 
 [project.urls]
 Homepage = "https://github.com/jasonacox/jsonmore"
