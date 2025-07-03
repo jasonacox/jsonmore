@@ -37,7 +37,7 @@ print_error() {
 }
 
 # Check if we're in the right directory
-if [ ! -f "pyproject.toml" ] || [ ! -f "setup.py" ] || [ ! -d "jsonmore" ]; then
+if [ ! -f "pyproject.toml" ] || [ ! -d "jsonmore" ]; then
     print_error "This script must be run from the jsonmore project root directory"
     exit 1
 fi
