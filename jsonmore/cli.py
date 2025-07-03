@@ -44,7 +44,7 @@ Examples:
   jsonmore examples/bad.json                        # Auto-repair malformed JSON
   jsonmore examples/bad.json --no-repair            # Disable auto-repair
   jsonmore examples/partial.json --compact          # Structure overview
-  
+
   # Read from stdin:
   cat examples/test.json | jsonmore
   echo '{"key": "value"}' | jsonmore --compact
