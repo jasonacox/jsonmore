@@ -1,0 +1,128 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "age": 28,
+      "isActive": true,
+      "roles": ["user", "moderator"],
+      "profile": {
+        "bio": "Software engineer with 5 years experience",
+        "location": "San Francisco, CA",
+        "interests": ["coding", "hiking", "photography"],
+        "social": {
+          "twitter": "@alice_codes",
+          "linkedin": "alice-johnson-dev",
+          "github": "alice-j"
+        }
+      },
+      "projects": [
+        {
+          "name": "E-commerce Platform",
+          "description": "Full-stack web application for online shopping",
+          "technologies": ["React", "Node.js", "PostgreSQL", "Redis"],
+          "status": "completed",
+          "startDate": "2023-01-15",
+          "endDate": "2023-06-30"
+        },
+        {
+          "name": "Mobile Task Manager",
+          "description": "Cross-platform mobile app for task management",
+          "technologies": ["React Native", "Firebase", "TypeScript"],
+          "status": "in-progress",
+          "startDate": "2023-07-01",
+          "endDate": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "age": 35,
+      "isActive": true,
+      "roles": ["user", "admin"],
+      "profile": {
+        "bio": "Full-stack developer and team lead",
+        "location": "Austin, TX",
+        "interests": ["music", "cooking", "travel"],
+        "social": {
+          "twitter": "@bob_dev",
+          "linkedin": "bob-smith-fullstack",
+          "github": "bob-smith"
+        }
+      },
+      "projects": [
+        {
+          "name": "Analytics Dashboard",
+          "description": "Real-time data visualization dashboard",
+          "technologies": ["Vue.js", "Python", "MongoDB", "Docker"],
+          "status": "completed",
+          "startDate": "2022-09-01",
+          "endDate": "2023-03-15"
+        },
+        {
+          "name": "API Gateway",
+          "description": "Microservices API gateway with authentication",
+          "technologies": ["Go", "PostgreSQL", "Kubernetes", "JWT"],
+          "status": "completed",
+          "startDate": "2023-04-01",
+          "endDate": "2023-08-30"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Charlie Brown",
+      "email": "charlie@example.com",
+      "age": 24,
+      "isActive": false,
+      "roles": ["user"],
+      "profile": {
+        "bio": "Junior developer passionate about AI and ML",
+        "location": "Seattle, WA",
+        "interests": ["machine learning", "gaming", "books"],
+        "social": {
+          "twitter": "@charlie_ml",
+          "linkedin": "charlie-brown-dev",
+          "github": "charlie-b"
+        }
+      },
+      "projects": [
+        {
+          "name": "ML Recommendation System",
+          "description": "Machine learning based product recommendation engine",
+          "technologies": ["Python", "TensorFlow", "Pandas", "Scikit-learn"],
+          "status": "in-progress",
+          "startDate": "2023-05-01",
+          "endDate": null
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "totalUsers": 3,
+    "activeUsers": 2,
+    "lastUpdated": "2023-12-01T10:30:00Z",
+    "version": "1.2.0",
+    "features": [
+      "user-management",
+      "project-tracking",
+      "role-based-access",
+      "social-integration"
+    ],
+    "statistics": {
+      "totalProjects": 5,
+      "completedProjects": 3,
+      "inProgressProjects": 2,
+      "averageProjectDuration": "4.5 months",
+      "technologies": {
+        "frontend": ["React", "Vue.js", "React Native"],
+        "backend": ["Node.js", "Python", "Go"],
+        "databases": ["PostgreSQL", "MongoDB", "Firebase", "Redis"],
+        "tools": ["Docker", "Kubernetes", "JWT", "TypeScript"]
+      }
+    }
+  }
+}

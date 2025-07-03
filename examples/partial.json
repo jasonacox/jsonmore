@@ -1,0 +1,13 @@
+This is not JSON at the beginning.
+
+{"user": {"name": "Alice", "age": 25}}
+
+Some text in between.
+
+["apple", "banana", "cherry"]
+
+More random text.
+
+{"status": "complete", "count": 42}
+
+And some ending text that is not JSON.

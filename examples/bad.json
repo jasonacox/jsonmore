@@ -1,0 +1,29 @@
+{
+  "name": "John Doe",
+  "age": 30,
+  "isEmployed": true,
+  "skills": ["Python", "JavaScript", "Docker"],
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "zipCode": "10001",
+    "coordinates": 
+      "lat": 40.7128,
+      "lng": -74.0060
+    }
+  },
+  "projects": [
+    {
+      "name": "Web App",
+      "status": "completed",
+      "technologies": ["React", "Node.js", "MongoDB"]
+    },
+    {
+      "name": "Mobile App",
+      "status": "in-progress",
+      "technologies": ["React Native", "Firebase"]
+    }
+  ],
+  "certifications": null,
+  "yearsExperience": 5.5
+}

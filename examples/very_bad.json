@@ -1,0 +1,21 @@
+{
+  "users": [
+    {
+      name: "Alice",  // Missing quotes on key
+      'age': 25,      // Single quotes instead of double
+      "skills": ["Python", "JavaScript",],  // Trailing comma
+      "active": true,
+    },  // Trailing comma
+    {
+      "name": "Bob",
+      "age": 30
+      "department": "Engineering"  // Missing comma
+    }
+  ],
+  /* Multi-line comment
+     that spans multiple lines */
+  "metadata": {
+    "total": 2,
+    "created": "2023-01-01"  // No trailing comma (valid)
+  }
+  // Missing closing brace for main object

@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jsonmore"
+version = "1.0.0"
+description = "A powerful command-line tool for reading, formatting, and analyzing JSON files with beautiful syntax highlighting, automatic error repair, and smart paging"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Jason Cox", email = "jason@jasonacox.com"}
+]
+maintainers = [
+    {name = "Jason Cox", email = "jason@jasonacox.com"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Topic :: Utilities",
+]
+keywords = ["json", "cli", "formatting", "syntax-highlighting", "repair", "validator"]
+requires-python = ">=3.6"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/jasonacox/jsonmore"
+Documentation = "https://github.com/jasonacox/jsonmore#readme"
+Repository = "https://github.com/jasonacox/jsonmore.git"
+"Bug Tracker" = "https://github.com/jasonacox/jsonmore/issues"
+
+[project.scripts]
+jsonmore = "jsonmore.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black",
+    "flake8",
+    "mypy",
+]
+
+[tool.setuptools]
+packages = ["jsonmore"]
+
+[tool.setuptools.package-data]
+jsonmore = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py36']
+
+[tool.mypy]
+python_version = "3.6"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --color=yes"
+minversion = "6.0"
