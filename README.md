@@ -67,6 +67,9 @@ After installation, use the `jsonmore` command directly:
 # Basic usage
 jsonmore data/example.json
 
+# Alternative: run as Python module
+python -m jsonmore data/example.json
+
 # Show structure overview only
 jsonmore data/example.json --compact
 

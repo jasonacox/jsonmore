@@ -68,6 +68,10 @@ mypy jsonmore/ --ignore-missing-imports
 
 # Build package
 python -m build
+
+# Test the CLI functionality
+python -m jsonmore examples/test.json --no-pager
+python -m jsonmore --version
 ```
 
 ## Badge Integration

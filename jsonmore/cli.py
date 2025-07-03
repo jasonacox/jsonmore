@@ -28,7 +28,7 @@ from .utils import paginate_output
 from . import __version__, __description__
 
 
-def main():
+def main() -> None:
     """Main function with command line interface"""
     parser = argparse.ArgumentParser(
         description="JSON File Reader with formatting and color coding",
@@ -39,6 +39,7 @@ Examples:
   jsonmore data/squad-train-v2.0.json --no-colors
   jsonmore data/squad-train-v2.0.json --compact
   jsonmore data/squad-train-v2.0.json --max-size 100
+  jsonmore data/squad-train-v2.0.json --no-pager    # Disable paging
   jsonmore bad.json                     # Auto-repair malformed JSON
   jsonmore bad.json --no-repair         # Disable auto-repair
         """,

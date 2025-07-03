@@ -18,9 +18,10 @@ Repository: https://github.com/jasonacox/jsonmore
 import os
 import shutil
 import subprocess
+from typing import Optional
 
 
-def get_pager():
+def get_pager() -> Optional[str]:
     """Get the preferred pager command"""
     # Check for user preference in environment
     pager = os.environ.get("PAGER")

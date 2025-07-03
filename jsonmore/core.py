@@ -115,7 +115,7 @@ class JSONFormatter:
 class JSONReader:
     """Main JSON reader class"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.formatter = JSONFormatter()
 
     def read_file(
@@ -310,7 +310,7 @@ class JSONReader:
         elif status == "corrupt":
             # Completely malformed JSON
             error = result["error"]
-            highlighted_text = result["highlighted_text"]
+            highlighted_text = str(result["highlighted_text"])
 
             print(
                 f"\n{Colors.RED}✗ JSON is severely malformed and cannot be parsed{Colors.RESET}"
