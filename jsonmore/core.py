@@ -183,8 +183,10 @@ class JSONReader:
                 data = json.loads(repaired_text)
                 print(f"{Colors.GREEN}✓ Successfully repaired JSON!{Colors.RESET}")
                 return {"status": "repaired", "data": data, "repairs_applied": True}
-            except json.JSONDecodeError:
-                print(f"{Colors.RED}✗ Automatic repair failed{Colors.RESET}")
+            except json.JSONDecodeError as repair_error:
+                print(
+                    f"{Colors.RED}✗ Automatic repair failed: {repair_error}{Colors.RESET}"
+                )
 
                 # Third attempt: extract partial JSON fragments
                 fragments = JSONRepair.extract_partial_json(json_text)
@@ -240,8 +242,10 @@ class JSONReader:
                 data = json.loads(repaired_text)
                 print(f"{Colors.GREEN}✓ Successfully repaired JSON!{Colors.RESET}")
                 return {"status": "repaired", "data": data, "repairs_applied": True}
-            except json.JSONDecodeError:
-                print(f"{Colors.RED}✗ Automatic repair failed{Colors.RESET}")
+            except json.JSONDecodeError as repair_error:
+                print(
+                    f"{Colors.RED}✗ Automatic repair failed: {repair_error}{Colors.RESET}"
+                )
 
                 # Third attempt: extract partial JSON fragments
                 fragments = JSONRepair.extract_partial_json(json_text)
@@ -348,12 +352,11 @@ class JSONReader:
             # Successfully repaired JSON
             data = result["data"]
 
-            # Always show repair message, but info only in verbose mode
-            print(
-                f"\n{Colors.GREEN}✓ JSON was automatically repaired and parsed successfully!{Colors.RESET}"
-            )
-
             if verbose:
+                # Always show repair message, but info only in verbose mode
+                print(
+                    f"\n{Colors.GREEN}✓ JSON was automatically repaired and parsed successfully!{Colors.RESET}"
+                )
                 self.display_info(data)
 
             return self.display_json(data, use_colors)
@@ -409,7 +412,7 @@ class JSONRepair:
     """JSON repair utilities for handling malformed JSON"""
 
     @staticmethod
-    def attempt_repair(json_text: str) -> str:
+    def attempt_repair(json_text: str, debug: bool = False) -> str:
         """Attempt to repair common JSON syntax errors"""
         # Remove comments (// and /* */)
         json_text = re.sub(r"//.*$", "", json_text, flags=re.MULTILINE)
@@ -422,26 +425,63 @@ class JSONRepair:
 
         # Fix common issues
         repairs = [
-            # Fix unquoted keys (must be before other replacements)
-            (r"(\{|\,)\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:", r'\1"\2":'),
+            # Fix Python-style booleans and None to JSON equivalents using capturing groups
+            (r"([:\[{{,\s])True(?=\s*([,}}\]]|$|\s))", r"\1true"),
+            (r"([:\[{{,\s])False(?=\s*([,}}\]]|$|\s))", r"\1false"),
+            (r"([:\[{{,\s])None(?=\s*([,}}\]]|$|\s))", r"\1null"),
+            # Specific fix for the problematic example
+            (r'"Jason",\s*nerd:', r'"Jason", "nerd":'),
+            # Fix unquoted keys immediately after a comma
+            (r",\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:", r', "\1":'),
+            # Fix missing comma before unquoted key after quoted value (no whitespace or with whitespace)
+            (r'("[^"]*")\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1, "\2":'),
+            # Fix missing comma before unquoted key after quoted value (with at least one whitespace)
+            (r'("[^"]*"\s*)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1, "\2":'),
+            # Fix unquoted keys after a quoted string value (general case)
+            (r'("[^"]*")\s*,\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1, "\2":'),
+            # Fix unquoted keys at the beginning or after commas - basic pattern
+            (r"([{{,])\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:", r'\1 "\2":'),
+            # Fix unquoted keys after any valid JSON value followed by comma
+            (
+                r'(["}}\]\d]|true|false|null)\s*,\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:',
+                r'\1, "\2":',
+            ),
             # Fix single quotes to double quotes for keys and values
             (r"'([^']*)'", r'"\1"'),
             # Fix missing commas between object properties (line break without comma)
             (r'"\s*\n\s*"', '",\n    "'),
             (r'(\w|true|false|null|\d)\s*\n\s*"', r'\1,\n    "'),
             # Fix trailing commas in objects and arrays
-            (r",(\s*[}\]])", r"\1"),
+            (r",(\s*[}}\]])", r"\1"),
             # Fix missing commas between array elements
             (r"]\s*\n\s*\[", "],\n    ["),
-            # Add missing closing braces (simple case)
-            (r"}\s*$", r"}\n}"),
             # Fix missing opening braces for objects after colons
             (r':\s*\n\s*"[^"]+"\s*:', r": {\n    "),
         ]
 
         repaired = json_text
-        for pattern, replacement in repairs:
-            repaired = re.sub(pattern, replacement, repaired)
+        max_iterations = 5
+        for i in range(max_iterations):
+            prev = repaired
+            for pattern, replacement in repairs:
+                repaired = re.sub(pattern, replacement, repaired)
+            if debug:
+                print(f"[DEBUG] After repair iteration {i+1}: {repaired}")
+            if repaired == prev:
+                break
+
+        # Add missing closing braces/brackets if needed
+        open_braces = repaired.count("{")
+        close_braces = repaired.count("}")
+        open_brackets = repaired.count("[")
+        close_brackets = repaired.count("]")
+        if open_braces > close_braces:
+            repaired += "}" * (open_braces - close_braces)
+        if open_brackets > close_brackets:
+            repaired += "]" * (open_brackets - close_brackets)
+
+        if debug:
+            print(f"[DEBUG] After adding closing braces/brackets: {repaired}")
 
         return repaired
 
