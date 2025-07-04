@@ -6,6 +6,23 @@ A powerful command-line tool for reading, formatting, and analyzing JSON files w
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Quick Start 🚀
+
+After installation, use the `jsonmore` command directly:
+
+```bash
+# Install
+pip install jsonmore
+
+# Pipe Test
+echo '{"id": 123, "name": "Jason", "nerd": true}' | jsonmore
+
+# File Test
+jsonmore somefile.json
+```
+
+<img width="452" alt="image" src="https://github.com/user-attachments/assets/1a071f4c-f068-4190-89e0-9eb9ddfe9e37" />
+
 ## Installation
 
 ### For Users (Recommended)
@@ -33,26 +50,6 @@ cd jsonmore
 pip install -e ".[dev]"
 ```
 
-## Quick Start 🚀
-
-After installation, use the `jsonmore` command directly:
-
-```bash
-# Basic usage - JSON-only output
-jsonmore data/example.json
-
-# Show additional headers and structure info
-jsonmore data/example.json --verbose
-
-# Alternative: run as Python module
-python -m jsonmore data/example.json
-
-
-
-# Disable colors for plain text output
-jsonmore data/example.json --no-colors
-```
-
 ## Usage
 
 ### Command Line Interface
@@ -66,8 +63,6 @@ jsonmore large_file.json --max-size 100
 
 # Disable paging for direct output
 jsonmore file.json --no-pager
-
-
 
 # Handle malformed JSON
 jsonmore broken.json              # Auto-repair (default)
@@ -206,19 +201,6 @@ flake8 jsonmore/
 mypy jsonmore/
 ```
 
-### Building and Publishing
-
-```bash
-# Build package
-python -m build
-
-# Test on TestPyPI
-python -m twine upload --repository testpypi dist/*
-
-# Publish to PyPI
-python -m twine upload dist/*
-```
-
 ## Error Handling
 
 The tool provides multiple levels of error handling:
@@ -227,36 +209,6 @@ The tool provides multiple levels of error handling:
 2. **Auto-Repair**: Attempts to fix common errors
 3. **Partial Parsing**: Extracts valid JSON fragments
 4. **Raw Display**: Shows content with error highlighting
-
-### Example: Partial JSON Recovery
-
-For files containing mixed content, jsonmore will extract and display valid JSON fragments:
-
-```
-This is some text...
-
-{"user": {"name": "Alice", "age": 25}}
-
-More text here...
-
-["apple", "banana", "cherry"]
-
-End of file.
-```
-
-## Output Examples
-
-### Structure Overview
-```
-JSON Structure Overview:
-Type: dict
-Keys: 8
-Top-level keys: ['name', 'age', 'isEmployed', 'skills', 'address', 'projects']
-
-Structure preview:
-{name: "John Doe", age: int, isEmployed: bool, skills: ["Python", ... (3 items)], 
- address: {street: "123 Main St", city: "New York", ...}, ...}
-```
 
 ### Color-Coded Output
 - **Keys**: Cyan
@@ -274,75 +226,6 @@ Structure preview:
   "city": "NYC"
 }
 ```
-
-## Configuration
-
-### Paging Behavior
-
-For long outputs, jsonmore automatically uses system pagers:
-
-1. **`less`** (preferred): Full navigation with color support
-2. **`more`**: Basic paging functionality  
-3. **Direct output**: Fallback when no pager available
-
-Pager selection respects the `$PAGER` environment variable.
-
-### File Size Limits
-
-Default maximum file size: **50MB**
-
-```bash
-# Increase limit to 100MB
-jsonmore huge_file.json --max-size 100
-```
-
-## Examples
-
-### Different Use Cases
-
-```bash
-# Configuration files
-
-
-# API responses
-jsonmore api_response.json
-
-# Large datasets
-jsonmore data/large_dataset.json --max-size 200
-
-# Debugging malformed JSON
-jsonmore broken_config.json
-```
-
-### Integration with Other Tools
-
-```bash
-# Pipe output
-jsonmore data.json --no-colors --no-pager | grep "name"
-
-# Quick structure check
-
-
-# Validation in scripts
-jsonmore input.json --no-repair || echo "File is invalid"
-```
-
-## Technical Details
-
-### Performance
-- **Fast parsing**: Uses Python's built-in `json` module
-- **Memory efficient**: Streams large files when possible
-- **Smart paging**: Only activates for outputs longer than terminal height
-
-### Dependencies
-- **Python 3.8+** (uses f-strings and type hints)
-- **Colorama** (cross-platform terminal colors, especially for Windows)
-- **Optional**: `less`/`more` for enhanced paging
-
-### Exit Codes
-- **0**: Success
-- **1**: File not found, parsing error, or size limit exceeded
-- **130**: User interrupted (Ctrl+C)
 
 ## Contributing
 
