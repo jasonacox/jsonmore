@@ -80,7 +80,9 @@ class Pager:
                 break
             print(":", end="", flush=True)
             ch = self._getch()
-            print("\r" + " " * (self.term_width - 1) + "\r", end="", flush=True)  # Clear line
+            print(
+                "\r" + " " * (self.term_width - 1) + "\r", end="", flush=True
+            )  # Clear line
             if ch == "q":
                 print()
                 break
