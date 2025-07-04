@@ -345,16 +345,18 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(pager, "custom_pager")
 
     @patch("shutil.get_terminal_size")
-    @patch("builtins.print")
-    def test_paginate_output_short_text(self, mock_print, mock_terminal_size):
+    @patch("jsonmore.pager.Pager.show", return_value=None)
+    @patch("sys.stdout.isatty", return_value=True)
+    @patch("sys.stdin.isatty", return_value=True)
+    def test_paginate_output_short_text(self, _mock_stdin_isatty, _mock_stdout_isatty, _mock_show, mock_terminal_size):
         """Test pagination with short text"""
         mock_terminal_size.return_value = MagicMock(lines=50)
 
         short_text = "Short text"
         paginate_output(short_text, use_pager=True)
 
-        # Should print directly for short text
-        mock_print.assert_called_once_with(short_text)
+        # Pager.show should be called once
+        _mock_show.assert_called_once()
 
     @patch("builtins.print")
     def test_paginate_output_no_pager(self, mock_print):

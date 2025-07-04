@@ -52,7 +52,9 @@ Examples:
     )
 
     parser.add_argument(
-        "file", nargs="?", help="Path to JSON file (or read from stdin if not provided)"
+        "files",
+        nargs="*",
+        help="Path(s) to JSON file(s) (or read from stdin if not provided)",
     )
     parser.add_argument("--no-colors", action="store_true", help="Disable color output")
 
@@ -90,8 +92,7 @@ Examples:
         reader = JSONReader()
         reader.formatter.indent = args.indent
 
-        # Read from stdin if no file specified, otherwise read from file
-        if args.file is None:
+        if not args.files:
             # Read from stdin
             try:
                 json_text = sys.stdin.read()
@@ -106,34 +107,50 @@ Examples:
                 result = reader.read_stdin(
                     json_text, repair_attempts=not args.no_repair, verbose=args.verbose
                 )
+                output = reader.handle_json_result(
+                    result,
+                    use_colors=not args.no_colors,
+                    verbose=args.verbose,
+                )
+                if output:
+                    paginate_output(output, use_pager=not args.no_pager)
             except KeyboardInterrupt:
                 print(f"\n{Colors.YELLOW}Operation cancelled by user{Colors.RESET}")
                 sys.exit(1)
         else:
-            # Read the JSON file (with repair attempts by default)
-            result = reader.read_file(
-                args.file,
-                args.max_size,
-                repair_attempts=not args.no_repair,
-                verbose=args.verbose,
-            )
+            # Multiple files: process each in sequence
+            show_filenames = len(args.files) > 1
+            for idx, file_path in enumerate(args.files):
+                if show_filenames:
+                    print(f"{Colors.CYAN}File: {file_path}{Colors.RESET}\n")
+                try:
+                    result = reader.read_file(
+                        file_path,
+                        args.max_size,
+                        repair_attempts=not args.no_repair,
+                        verbose=args.verbose,
+                    )
+                    output = reader.handle_json_result(
+                        result,
+                        use_colors=not args.no_colors,
+                        verbose=args.verbose,
+                    )
+                    if output:
+                        paginate_output(output, use_pager=not args.no_pager)
+                except (FileNotFoundError, ValueError) as e:
+                    print(f"{Colors.RED}Error: {e}{Colors.RESET}", file=sys.stderr)
+                except KeyboardInterrupt:
+                    print(f"\n{Colors.YELLOW}Operation cancelled by user{Colors.RESET}")
+                    sys.exit(1)
+                except Exception as e:
+                    print(
+                        f"{Colors.RED}Unexpected error: {e}{Colors.RESET}",
+                        file=sys.stderr,
+                    )
+                    sys.exit(1)
+                if show_filenames and idx < len(args.files) - 1:
+                    print()
 
-        # Handle and display JSON parsing results with paging
-        output = reader.handle_json_result(
-            result,
-            use_colors=not args.no_colors,
-            verbose=args.verbose,
-        )
-
-        if output:  # Only paginate if there's formatted content
-            paginate_output(output, use_pager=not args.no_pager)
-
-    except (FileNotFoundError, ValueError) as e:
-        print(f"{Colors.RED}Error: {e}{Colors.RESET}", file=sys.stderr)
-        sys.exit(1)
-    except KeyboardInterrupt:
-        print(f"\n{Colors.YELLOW}Operation cancelled by user{Colors.RESET}")
-        sys.exit(1)
     except Exception as e:
         print(f"{Colors.RED}Unexpected error: {e}{Colors.RESET}", file=sys.stderr)
         sys.exit(1)

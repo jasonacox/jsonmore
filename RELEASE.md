@@ -1,5 +1,17 @@
 # jsonMore Release Notes
 
+## Version 1.0.2 - July 3, 2025
+
+### Enhancements
+- **Robust cross-platform paging:**
+  - Custom pager now supports up/down/space/enter navigation, color output, and interactive navigation for both file and piped input.
+  - Fallback pager for piped input supports single-key navigation (space, enter, q) using /dev/tty, with proper terminal formatting.
+- **Improved CLI usability:**
+  - Paging now works for piped input as well as files.
+  - Pager is only disabled if output is not a TTY, ensuring correct behavior for both interactive and piped use cases.
+- **Better error handling:**
+  - Graceful fallback and clear error messages if /dev/tty is unavailable or navigation input is not possible.
+
 ## Version 1.0.1 - July 2, 2025
 
 ### Enhancements

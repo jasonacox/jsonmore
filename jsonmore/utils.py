@@ -18,12 +18,13 @@ Repository: https://github.com/jasonacox/jsonmore
 
 import os
 import shutil
-import subprocess
 import sys
 from typing import Optional
 
 # Ensure colorama is initialized for Windows terminals
 from colorama import init
+
+from .pager import page
 
 init(strip=(not sys.stdout.isatty()))
 
@@ -44,43 +45,69 @@ def get_pager() -> Optional[str]:
 
 
 def paginate_output(text: str, use_pager: bool = True) -> None:
-    """Display text with pagination if needed"""
-    if not use_pager:
+    """Display text with pagination if needed (cross-platform, color-friendly)."""
+    # Only use pager if output is a TTY (terminal)
+    if not use_pager or not sys.stdout.isatty():
         print(text)
         return
 
-    # Get terminal height
-    try:
-        terminal_height = shutil.get_terminal_size().lines
-    except OSError:
-        terminal_height = 24  # Default fallback
-
-    # Count lines in output
-    lines = text.split("\n")
-
-    # If output is short enough, just print it
-    if len(lines) <= terminal_height - 2:  # Leave some margin
-        print(text)
-        return
-
-    # Use pager for long output
-    pager = get_pager()
-    if pager and pager != "cat":
+    # If input is not a TTY (e.g., piped), use a simple pager (space/enter only), reading navigation from /dev/tty in raw mode only for keypress
+    if not sys.stdin.isatty():
+        lines = text.splitlines()
+        height = shutil.get_terminal_size().lines - 1 if sys.stdout.isatty() else 24
+        pos = 0
+        tty_in = None
         try:
-            # Set up pager with appropriate options
-            if pager == "less":
-                # Use less with options: -R (raw color codes), -F (quit if fits on screen), -X (no init)
-                proc = subprocess.Popen(
-                    ["less", "-RFX"], stdin=subprocess.PIPE, text=True
-                )
-            else:  # 'more' or other pager
-                proc = subprocess.Popen([pager], stdin=subprocess.PIPE, text=True)
+            tty_in = open("/dev/tty")
+            import termios
+            import tty as ttymod
 
-            proc.communicate(input=text)
-            return
-        except (subprocess.SubprocessError, FileNotFoundError):
-            # Fall back to direct output if pager fails
-            pass
+            fd = tty_in.fileno()
+            old_settings = termios.tcgetattr(fd)
 
-    # Fallback: print directly
-    print(text)
+            def getch() -> str:
+                # Switch to raw mode, read one char, restore mode
+                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+                try:
+                    ttymod.setraw(fd)
+                    ch = tty_in.read(1)
+                finally:
+                    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+                return ch
+
+            while pos < len(lines):
+                end = min(pos + height, len(lines))
+                for i in range(pos, end):
+                    print(lines[i])
+                if end >= len(lines):
+                    print("(END) ", end="", flush=True)
+                    if tty_in:
+                        ch = getch()
+                    else:
+                        break
+                    print()
+                    break
+                print(":", end="", flush=True)
+                if tty_in:
+                    ch = getch()
+                else:
+                    break
+                if ch == "q":
+                    print()
+                    break
+                elif ch == " ":
+                    pos += height
+                elif ch in ("\r", "\n"):
+                    pos += 1
+                else:
+                    pos += 1
+        except OSError:
+            # If /dev/tty or termios fails, just print all
+            print("\n".join(lines))
+        finally:
+            if tty_in:
+                tty_in.close()
+        return
+
+    # Otherwise, use the full-featured pager
+    page(text)
