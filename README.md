@@ -1,8 +1,8 @@
 # jsonMore
 
-A powerful command-line tool for reading, formatting, and analyzing JSON files with beautiful syntax highlighting, automatic error repair, and smart paging.
+A command-line tool for reading, formatting, and analyzing JSON files with syntax highlighting, automatic error repair, and smart paging.
 
-[![PyPI version](https://badge.fury.io/py/jsonmore.svg)](https://badge.fury.io/py/jsonmore)
+[![PyPI Version](https://badge.fury.io/py/jsonmore.svg)](https://badge.fury.io/py/jsonmore)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
