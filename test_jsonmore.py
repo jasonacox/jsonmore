@@ -348,7 +348,9 @@ class TestUtils(unittest.TestCase):
     @patch("jsonmore.pager.Pager.show", return_value=None)
     @patch("sys.stdout.isatty", return_value=True)
     @patch("sys.stdin.isatty", return_value=True)
-    def test_paginate_output_short_text(self, _mock_stdin_isatty, _mock_stdout_isatty, _mock_show, mock_terminal_size):
+    def test_paginate_output_short_text(
+        self, _mock_stdin_isatty, _mock_stdout_isatty, _mock_show, mock_terminal_size
+    ):
         """Test pagination with short text"""
         mock_terminal_size.return_value = MagicMock(lines=50)
 
