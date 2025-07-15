@@ -1,5 +1,13 @@
 # jsonMore Release Notes
 
+## Version 1.0.3 - July 14, 2025
+
+### Bug Fixes
+- **Fixed pager prompt display issues:**
+  - Fixed ":" and "(END)" prompts appearing in output after navigation
+  - Improved line clearing for both piped input fallback pager and full-featured pager
+  - Better terminal formatting when using space/enter navigation
+
 ## Version 1.0.2 - July 3, 2025
 
 ### Enhancements
