@@ -11,7 +11,7 @@ print(f"Original JSON: {json_text}")
 try:
     repaired_text = JSONRepair.attempt_repair(json_text)
     print(f"Repaired JSON: {repaired_text}")
-    
+
     # Try to parse
     data = json.loads(repaired_text)
     print(f"Successfully parsed: {data}")
