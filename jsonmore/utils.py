@@ -85,7 +85,9 @@ def paginate_output(text: str, use_pager: bool = True) -> None:
                         ch = getch()
                     else:
                         break
-                    print("\r" + " " * 10 + "\r", end="", flush=True)  # Clear (END) prompt
+                    print(
+                        "\r" + " " * 10 + "\r", end="", flush=True
+                    )  # Clear (END) prompt
                     break
                 print(":", end="", flush=True)
                 if tty_in:
