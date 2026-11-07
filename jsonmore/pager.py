@@ -51,9 +51,11 @@ class Pager:
             # Fallback: return empty string if getch fails
             return ""
 
-    def _get_arrow(self) -> str:
-        # Detect arrow keys (returns 'up', 'down', or None)
-        ch = self._getch()
+    def _get_arrow(self, ch: str = "") -> str:
+        # Detect arrow keys (returns 'up', 'down', or the key read).
+        # ch is the first key if it has already been read by the caller.
+        if not ch:
+            ch = self._getch()
         if ch == "\x1b":  # ANSI escape
             next1 = self._getch()
             if next1 == "[":
@@ -93,7 +95,7 @@ class Pager:
             elif ch in ("\r", "\n"):
                 pos = min(pos + 1, len(lines) - height if len(lines) > height else 0)
             else:
-                arrow = ch if ch not in ("\x1b",) else self._get_arrow()
+                arrow = self._get_arrow(ch) if ch == "\x1b" else ch
                 if arrow == "down":
                     pos = min(
                         pos + 1, len(lines) - height if len(lines) > height else 0
