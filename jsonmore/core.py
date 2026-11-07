@@ -46,11 +46,11 @@ class JSONFormatter:
 
     def _format_key(self, key: str) -> str:
         """Format JSON keys with color"""
-        return self._colorize(f'"{key}"', Colors.BRIGHT_CYAN)
+        return self._colorize(json.dumps(key, ensure_ascii=False), Colors.BRIGHT_CYAN)
 
     def _format_string(self, value: str) -> str:
         """Format string values with color"""
-        escaped_value = json.dumps(value)
+        escaped_value = json.dumps(value, ensure_ascii=False)
         return self._colorize(escaped_value, Colors.BRIGHT_GREEN)
 
     def _format_number(self, value: Union[int, float]) -> str:
