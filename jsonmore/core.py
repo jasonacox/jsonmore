@@ -412,11 +412,52 @@ class JSONRepair:
     """JSON repair utilities for handling malformed JSON"""
 
     @staticmethod
+    def strip_comments(text: str) -> str:
+        """Remove // and /* */ comments, leaving string literals untouched"""
+        out = []
+        i, n = 0, len(text)
+        quote = None  # active string delimiter (" or ')
+        while i < n:
+            ch = text[i]
+            if quote:
+                out.append(ch)
+                if ch == "\\" and i + 1 < n:
+                    out.append(text[i + 1])
+                    i += 2
+                    continue
+                if ch == quote:
+                    quote = None
+                i += 1
+            elif ch in ('"', "'"):
+                quote = ch
+                out.append(ch)
+                i += 1
+            elif text.startswith("//", i):
+                end = text.find("\n", i)
+                i = n if end == -1 else end
+            elif text.startswith("/*", i):
+                end = text.find("*/", i + 2)
+                i = n if end == -1 else end + 2
+            else:
+                out.append(ch)
+                i += 1
+        return "".join(out)
+
+    @staticmethod
     def attempt_repair(json_text: str, debug: bool = False) -> str:
         """Attempt to repair common JSON syntax errors"""
-        # Remove comments (// and /* */)
-        json_text = re.sub(r"//.*$", "", json_text, flags=re.MULTILINE)
-        json_text = re.sub(r"/\*.*?\*/", "", json_text, flags=re.DOTALL)
+        # Remove comments (// and /* */) outside of string literals
+        json_text = JSONRepair.strip_comments(json_text)
+
+        # Fast path: comments and trailing commas are the most common problems.
+        # Try fixing only those before the broader (string-unaware) regex repairs,
+        # which can corrupt string contents such as URLs.
+        minimal = re.sub(r",(\s*[}\]])", r"\1", json_text)
+        try:
+            json.loads(minimal)
+            return minimal
+        except json.JSONDecodeError:
+            pass
 
         # Fix specific pattern: "key": \n "prop": value -> "key": { "prop": value
         json_text = re.sub(
