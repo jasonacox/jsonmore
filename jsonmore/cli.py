@@ -114,12 +114,18 @@ Examples:
                 )
                 if output:
                     paginate_output(output, use_pager=not args.no_pager)
+                if result.get("status") == "corrupt":
+                    sys.exit(1)
+            except ValueError as e:
+                print(f"{Colors.RED}Error: {e}{Colors.RESET}", file=sys.stderr)
+                sys.exit(1)
             except KeyboardInterrupt:
                 print(f"\n{Colors.YELLOW}Operation cancelled by user{Colors.RESET}")
                 sys.exit(1)
         else:
             # Multiple files: process each in sequence
             show_filenames = len(args.files) > 1
+            had_error = False
             for idx, file_path in enumerate(args.files):
                 if show_filenames:
                     print(f"{Colors.CYAN}File: {file_path}{Colors.RESET}\n")
@@ -137,8 +143,11 @@ Examples:
                     )
                     if output:
                         paginate_output(output, use_pager=not args.no_pager)
+                    if result.get("status") == "corrupt":
+                        had_error = True
                 except (FileNotFoundError, ValueError) as e:
                     print(f"{Colors.RED}Error: {e}{Colors.RESET}", file=sys.stderr)
+                    had_error = True
                 except KeyboardInterrupt:
                     print(f"\n{Colors.YELLOW}Operation cancelled by user{Colors.RESET}")
                     sys.exit(1)
@@ -150,6 +159,8 @@ Examples:
                     sys.exit(1)
                 if show_filenames and idx < len(args.files) - 1:
                     print()
+            if had_error:
+                sys.exit(1)
 
     except Exception as e:
         print(f"{Colors.RED}Unexpected error: {e}{Colors.RESET}", file=sys.stderr)
