@@ -25,6 +25,7 @@ Repository: https://github.com/jasonacox/jsonmore
 
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Union
 
@@ -174,18 +175,23 @@ class JSONReader:
                 raise ValueError(f"Invalid JSON format: {original_error}")
 
             print(
-                f"{Colors.YELLOW}⚠ JSON parsing failed, attempting repairs...{Colors.RESET}"
+                f"{Colors.YELLOW}⚠ JSON parsing failed, attempting repairs...{Colors.RESET}",
+                file=sys.stderr,
             )
 
             # Second attempt: try automatic repair
             try:
                 repaired_text = JSONRepair.attempt_repair(json_text)
                 data = json.loads(repaired_text)
-                print(f"{Colors.GREEN}✓ Successfully repaired JSON!{Colors.RESET}")
+                print(
+                    f"{Colors.GREEN}✓ Successfully repaired JSON!{Colors.RESET}",
+                    file=sys.stderr,
+                )
                 return {"status": "repaired", "data": data, "repairs_applied": True}
             except json.JSONDecodeError as repair_error:
                 print(
-                    f"{Colors.RED}✗ Automatic repair failed: {repair_error}{Colors.RESET}"
+                    f"{Colors.RED}✗ Automatic repair failed: {repair_error}{Colors.RESET}",
+                    file=sys.stderr,
                 )
 
                 # Third attempt: extract partial JSON fragments
@@ -233,18 +239,23 @@ class JSONReader:
                 raise ValueError(f"Invalid JSON format: {original_error}")
 
             print(
-                f"{Colors.YELLOW}⚠ JSON parsing failed, attempting repairs...{Colors.RESET}"
+                f"{Colors.YELLOW}⚠ JSON parsing failed, attempting repairs...{Colors.RESET}",
+                file=sys.stderr,
             )
 
             # Second attempt: try automatic repair
             try:
                 repaired_text = JSONRepair.attempt_repair(json_text)
                 data = json.loads(repaired_text)
-                print(f"{Colors.GREEN}✓ Successfully repaired JSON!{Colors.RESET}")
+                print(
+                    f"{Colors.GREEN}✓ Successfully repaired JSON!{Colors.RESET}",
+                    file=sys.stderr,
+                )
                 return {"status": "repaired", "data": data, "repairs_applied": True}
             except json.JSONDecodeError as repair_error:
                 print(
-                    f"{Colors.RED}✗ Automatic repair failed: {repair_error}{Colors.RESET}"
+                    f"{Colors.RED}✗ Automatic repair failed: {repair_error}{Colors.RESET}",
+                    file=sys.stderr,
                 )
 
                 # Third attempt: extract partial JSON fragments
